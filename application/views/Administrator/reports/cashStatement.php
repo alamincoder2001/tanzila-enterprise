@@ -2,39 +2,40 @@
 	#cashStatement .buttons {
 		margin-top: -5px;
 	}
-	.account-section{
-        display: flex;
-        border: none;
-        border-radius: 5px;
-        overflow:hidden;
-        margin-bottom: 20px;
-    }
 
-    .account-section h3{
-        margin: 10px 0;
-        padding: 0;
-    }
+	.account-section {
+		display: flex;
+		border: none;
+		border-radius: 5px;
+		overflow: hidden;
+		margin-bottom: 20px;
+	}
 
-	.account-section h4{
+	.account-section h3 {
+		margin: 10px 0;
+		padding: 0;
+	}
+
+	.account-section h4 {
 		margin: 0;
 		margin-top: 3px;
 	}
 
-    .account-section .col1{
-        background-color: #82a253;
-        color: white;
-        flex: 1;
+	.account-section .col1 {
+		background-color: #82a253;
+		color: white;
+		flex: 1;
 		text-align: center;
 		padding: 10px;
-    }
-    .account-section .col2{
-        background-color: #edf3e2;
-        flex: 2;
-        padding: 10px;
-        align-items: center; 
-        text-align:center;
-    }
+	}
 
+	.account-section .col2 {
+		background-color: #edf3e2;
+		flex: 2;
+		padding: 10px;
+		align-items: center;
+		text-align: center;
+	}
 </style>
 <div id="cashStatement">
 	<div class="row" style="border-bottom: 1px solid #ccc;">
@@ -71,8 +72,8 @@
 						<h4>Cash In</h4>
 					</div>
 					<div class="col2">
-						<h3 v-if="totalCashIn == 0"><?php echo $this->session->userdata('Currency_Name');?> 0.00</h3>
-						<h3 style="display:none;" v-bind:style="{display: totalCashIn > 0 ? '' : 'none'}"><?php echo $this->session->userdata('Currency_Name');?> {{ totalCashIn | decimal }}</h3>
+						<h3 v-if="totalCashIn == 0"><?php echo $this->session->userdata('Currency_Name'); ?> 0.00</h3>
+						<h3 style="display:none;" v-bind:style="{display: totalCashIn > 0 ? '' : 'none'}"><?php echo $this->session->userdata('Currency_Name'); ?> {{ totalCashIn | decimal }}</h3>
 					</div>
 				</div>
 			</div>
@@ -83,8 +84,8 @@
 						<h4>Cash Out</h4>
 					</div>
 					<div class="col2">
-						<h3 v-if="totalCashOut == 0"><?php echo $this->session->userdata('Currency_Name');?> 0.00</h3>
-						<h3 style="display:none;" v-bind:style="{display: totalCashOut > 0 ? '' : 'none'}"><?php echo $this->session->userdata('Currency_Name');?> {{ totalCashOut | decimal }}</h3>
+						<h3 v-if="totalCashOut == 0"><?php echo $this->session->userdata('Currency_Name'); ?> 0.00</h3>
+						<h3 style="display:none;" v-bind:style="{display: totalCashOut > 0 ? '' : 'none'}"><?php echo $this->session->userdata('Currency_Name'); ?> {{ totalCashOut | decimal }}</h3>
 					</div>
 				</div>
 			</div>
@@ -95,8 +96,8 @@
 						<h4>Balance</h4>
 					</div>
 					<div class="col2">
-						<h3 v-if="cashBalance == 0"><?php echo $this->session->userdata('Currency_Name');?> 0.00</h3>
-						<h3 style="display:none;" v-bind:style="{display: cashBalance == 0 ? 'none' : ''}"><?php echo $this->session->userdata('Currency_Name');?> {{ cashBalance | decimal }}</h3>
+						<h3 v-if="cashBalance == 0"><?php echo $this->session->userdata('Currency_Name'); ?> 0.00</h3>
+						<h3 style="display:none;" v-bind:style="{display: cashBalance == 0 ? 'none' : ''}"><?php echo $this->session->userdata('Currency_Name'); ?> {{ cashBalance | decimal }}</h3>
 					</div>
 				</div>
 			</div>
@@ -267,7 +268,7 @@
 						</tr>
 					</tfoot>
 				</table>
-				
+
 				<!-- Initial Loan -->
 				<table class="table table-bordered table-condensed" style="display: none;" v-bind:style="{display: loanInitials.length > 0 ? '' : 'none'}">
 					<thead>
@@ -303,7 +304,7 @@
 						</tr>
 					</tfoot>
 				</table>
-				
+
 				<!-- Loan Received -->
 				<table class="table table-bordered table-condensed">
 					<thead>
@@ -339,7 +340,7 @@
 						</tr>
 					</tfoot>
 				</table>
-				
+
 				<!-- Invest Received -->
 				<table class="table table-bordered table-condensed">
 					<thead>
@@ -398,6 +399,38 @@
 							<td style="text-align:right;">
 								<span v-if="assetsSales.length == 0">0.00</span>
 								<span style="display:none;" v-bind:style="{display: assetsSales.length > 0 ? '' : 'none'}">{{ totalAssetsSales | decimal }}</span>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+
+				<!-- Cash Transfer Received-->
+				<table class="table table-bordered table-condensed">
+					<thead>
+						<tr style="background: #dee4dc;">
+							<th colspan="4">Cash Transfer Received</th>
+						</tr>
+						<tr>
+							<th>Sl</th>
+							<th>Date</th>
+							<th>Transfer From</th>
+							<th>Amount</th>
+						</tr>
+					</thead>
+					<tbody style="display:none;" v-bind:style="{display: transferReceived.length > 0 ? '' : 'none'}">
+						<tr v-for="transfer in transferReceived">
+							<td>{{ transfer.id }}</td>
+							<td>{{ transfer.transferDate }}</td>
+							<td>{{ transfer.transferBranchname }}</td>
+							<td>{{ transfer.transferAmount }}</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr style="font-weight:bold;">
+							<td colspan="3" style="text-align:right">Total</td>
+							<td style="text-align:right;">
+								<span v-if="transferReceived.length == 0">0.00</span>
+								<span style="display:none;" v-bind:style="{display: transferReceived.length > 0 ? '' : 'none'}">{{ totalReceivedCash | decimal }}</span>
 							</td>
 						</tr>
 					</tfoot>
@@ -568,7 +601,7 @@
 						</tr>
 					</tfoot>
 				</table>
-				
+
 				<!-- Loan Payment -->
 				<table class="table table-bordered table-condensed">
 					<thead>
@@ -674,7 +707,7 @@
 						</tr>
 					</tfoot>
 				</table>
-				
+
 				<!-- Assets Cost -->
 				<table class="table table-bordered table-condensed">
 					<thead>
@@ -702,6 +735,38 @@
 							<td style="text-align:right;">
 								<span v-if="assetsCosts.length == 0">0.00</span>
 								<span style="display:none;" v-bind:style="{display: assetsCosts.length > 0 ? '' : 'none'}">{{ totalAssetsCost | decimal }}</span>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+
+				<!-- Cash Transfer -->
+				<table class="table table-bordered table-condensed">
+					<thead>
+						<tr style="background: #dee4dc;">
+							<th colspan="4">Cash Transfer</th>
+						</tr>
+						<tr>
+							<th>Sl</th>
+							<th>Date</th>
+							<th>Transfer To</th>
+							<th>Amount</th>
+						</tr>
+					</thead>
+					<tbody style="display:none;" v-bind:style="{display: transfers.length > 0 ? '' : 'none'}">
+						<tr v-for="transfer in transfers">
+							<td>{{ transfer.id }}</td>
+							<td>{{ transfer.transferDate }}</td>
+							<td>{{ transfer.reciveBranchname }}</td>
+							<td>{{ transfer.transferAmount }}</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr style="font-weight:bold;">
+							<td colspan="3" style="text-align:right">Total</td>
+							<td style="text-align:right;">
+								<span v-if="transfers.length == 0">0.00</span>
+								<span style="display:none;" v-bind:style="{display: transfers.length > 0 ? '' : 'none'}">{{ totalTransferCash | decimal }}</span>
 							</td>
 						</tr>
 					</tfoot>
@@ -740,6 +805,8 @@
 				investPayments: [],
 				loanInitials: [],
 				assetsCosts: [],
+				transfers: [],
+				transferReceived: [],
 				assetsSales: [],
 				employeePayments: []
 			}
@@ -800,19 +867,19 @@
 					return prev + parseFloat(curr.amount)
 				}, 0).toFixed(2);
 			},
-			
+
 			totalLoanReceived() {
 				return this.loanReceives.reduce((prev, curr) => {
 					return prev + parseFloat(curr.amount)
 				}, 0).toFixed(2);
 			},
-			
+
 			totalLoanPayment() {
 				return this.loanPayments.reduce((prev, curr) => {
 					return prev + parseFloat(curr.amount)
 				}, 0).toFixed(2);
 			},
-			
+
 			totalInvestReceived() {
 				return this.investReceives.reduce((prev, curr) => {
 					return prev + parseFloat(curr.amount)
@@ -823,38 +890,49 @@
 					return prev + parseFloat(curr.amount)
 				}, 0).toFixed(2);
 			},
-			totalEmployeePayments(){
+			totalEmployeePayments() {
 				return this.employeePayments.reduce((prev, curr) => {
 					return prev + parseFloat(curr.total_payment_amount)
 				}, 0).toFixed(2);
 			},
-			totalAssetsCost(){
+			totalAssetsCost() {
 				return this.assetsCosts.reduce((prev, curr) => {
 					return prev + parseFloat(curr.as_amount)
 				}, 0).toFixed(2);
 			},
-			totalAssetsSales(){
+			totalTransferCash() {
+				return this.transfers.reduce((prev, curr) => {
+					return prev + parseFloat(curr.transferAmount)
+				}, 0).toFixed(2);
+			},
+			totalReceivedCash() {
+				return this.transferReceived.reduce((prev, curr) => {
+					return prev + parseFloat(curr.transferAmount)
+				}, 0).toFixed(2);
+			},
+			totalAssetsSales() {
 				return this.assetsSales.reduce((prev, curr) => {
 					return prev + parseFloat(curr.as_amount)
 				}, 0).toFixed(2);
 			},
-			totalInitialLoan(){
+			totalInitialLoan() {
 				return this.loanInitials.reduce((prev, curr) => {
 					return prev + parseFloat(curr.initial_balance)
 				}, 0).toFixed(2);
 			},
-			totalCashIn(){
-				return parseFloat(this.totalSales) + 
-					parseFloat(this.totalReceivedFromCustomers) + 
-					parseFloat(this.totalReceivedFromSuppliers) + 
-					parseFloat(this.totalCashReceived) + 
-					parseFloat(this.totalLoanReceived) + 
-					parseFloat(this.totalInvestReceived) + 
-					parseFloat(this.totalInitialLoan) + 
-					parseFloat(this.totalAssetsSales) + 
-					parseFloat(this.totalBankWithdraw);
+			totalCashIn() {
+				return parseFloat(this.totalSales) +
+					parseFloat(this.totalReceivedFromCustomers) +
+					parseFloat(this.totalReceivedFromSuppliers) +
+					parseFloat(this.totalCashReceived) +
+					parseFloat(this.totalLoanReceived) +
+					parseFloat(this.totalInvestReceived) +
+					parseFloat(this.totalInitialLoan) +
+					parseFloat(this.totalAssetsSales) +
+					parseFloat(this.totalBankWithdraw)+
+					parseFloat(this.totalReceivedCash);
 			},
-			totalCashOut(){
+			totalCashOut() {
 				return parseFloat(this.totalPurchase) +
 					parseFloat(this.totalPaidToCustomers) +
 					parseFloat(this.totalPaidToSuppliers) +
@@ -863,13 +941,14 @@
 					parseFloat(this.totalInvestPayment) +
 					parseFloat(this.totalBankDeposit) +
 					parseFloat(this.totalAssetsCost) +
-					parseFloat(this.totalEmployeePayments);
+					parseFloat(this.totalEmployeePayments) +
+					parseFloat(this.totalTransferCash);
 			},
-			cashBalance(){
-				return parseFloat(this.totalCashIn) -  parseFloat(this.totalCashOut);
-			}			
+			cashBalance() {
+				return parseFloat(this.totalCashIn) - parseFloat(this.totalCashOut);
+			}
 		},
-		created(){
+		created() {
 			this.getStatements();
 		},
 		methods: {
@@ -891,6 +970,8 @@
 				this.getEmployeePayments();
 				this.getAssetsCost();
 				this.getAssetsSales();
+				this.getTransferCash();
+				this.getTransferRecieveCash();
 			},
 
 			getSales() {
@@ -1002,7 +1083,7 @@
 						this.bankWithdraws = res.data;
 					})
 			},
-			
+
 			async getLoanReceived() {
 				let filter = {
 					dateFrom: this.filter.dateFrom,
@@ -1018,7 +1099,7 @@
 					this.loanInitials = res.data.accounts;
 				})
 			},
-			getAssetsCost(){
+			getAssetsCost() {
 				let filter = {
 					dateFrom: this.filter.dateFrom,
 					dateTo: this.filter.dateTo,
@@ -1026,11 +1107,35 @@
 				}
 
 				axios.post('/get_assets_cost', filter)
-				.then(res => { 
-					this.assetsCosts = res.data.assets;
-				})
+					.then(res => {
+						this.assetsCosts = res.data.assets;
+					})
 			},
-			getAssetsSales(){
+			getTransferCash() {
+				let filter = {
+					dateFrom: this.filter.dateFrom,
+					dateTo: this.filter.dateTo,
+					branchFrom: "<?php echo $this->session->userdata('BRANCHid'); ?>"
+				}
+
+				axios.post('/get_cash_transfer', filter)
+					.then(res => {
+						this.transfers = res.data.message.filter(ct => ct.Status == 'a');
+					})
+			},
+			getTransferRecieveCash() {
+				let filter = {
+					dateFrom: this.filter.dateFrom,
+					dateTo: this.filter.dateTo,
+					branchTo: "<?php echo $this->session->userdata('BRANCHid'); ?>"
+				}
+
+				axios.post('/get_cash_transfer', filter)
+					.then(res => {
+						this.transferReceived = res.data.message.filter(cr => cr.Status == 'a');
+					})
+			},
+			getAssetsSales() {
 				let filter = {
 					dateFrom: this.filter.dateFrom,
 					dateTo: this.filter.dateTo,
@@ -1038,9 +1143,9 @@
 				}
 
 				axios.post('/get_assets_cost', filter)
-				.then(res => { 
-					this.assetsSales = res.data.assets;
-				})
+					.then(res => {
+						this.assetsSales = res.data.assets;
+					})
 			},
 			getLoanPayments() {
 				let filter = {
@@ -1053,7 +1158,7 @@
 						this.loanPayments = res.data;
 					})
 			},
-			
+
 			getInvestReceived() {
 				let filter = {
 					dateFrom: this.filter.dateFrom,
@@ -1078,19 +1183,19 @@
 					})
 			},
 
-			getEmployeePayments(){
+			getEmployeePayments() {
 				let filter = {
 					dateFrom: this.filter.dateFrom,
 					dateTo: this.filter.dateTo,
-					details : true
+					details: true
 				}
 				axios.post('/get_payments', filter)
-				.then(res => { 
-					this.employeePayments = res.data;
-				})
+					.then(res => {
+						this.employeePayments = res.data;
+					})
 			},
 
-			async print(){
+			async print() {
 				let printContent = `
 					<div class="container">
 						<h4 style="text-align:center">Cash Statements</h4 style="text-align:center">
@@ -1107,7 +1212,7 @@
 
 				var printWindow = window.open('', 'PRINT', `width=${screen.width}, height=${screen.height}`);
 				printWindow.document.write(`
-					<?php $this->load->view('Administrator/reports/reportHeader.php');?>
+					<?php $this->load->view('Administrator/reports/reportHeader.php'); ?>
 				`);
 
 				printWindow.document.body.innerHTML += printContent;

@@ -132,6 +132,7 @@ class Sales extends CI_Controller {
                 'SaleMaster_DueAmount'           => $data->sales->due,
                 'SaleMaster_Previous_Due'        => $data->sales->previousDue,
                 'payment_type'                   => $data->sales->payment_type,
+                'account_id'                     => $data->sales->account_id,
                 'SaleMaster_Description'         => $data->sales->note,
                 'Status'                         => 'a',
                 'is_service'                     => $data->sales->isService,
@@ -423,6 +424,7 @@ class Sales extends CI_Controller {
                 'SaleMaster_Previous_Due'        => $data->sales->previousDue,
                 'SaleMaster_Description'         => $data->sales->note,
                 'payment_type'                   => $data->sales->payment_type,
+                'account_id'                     => $data->sales->account_id,
                 "UpdateBy"                       => $this->session->userdata("FullName"),
                 'UpdateTime'                     => date("Y-m-d H:i:s"),
                 "SaleMaster_branchid"            => $this->session->userdata("BRANCHid")

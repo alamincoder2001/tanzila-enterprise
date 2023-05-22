@@ -106,6 +106,7 @@
             return {
                 filter: {
                     branchFrom: null,
+                    branchTo: null,
                     dateFrom: moment().format('YYYY-MM-DD'),
                     dateTo: moment().format('YYYY-MM-DD')
                 },
@@ -133,6 +134,7 @@
                     return
                 }
                 this.filter.branchFrom = this.selectedBranch.brunch_id;
+                this.filter.branchTo = "<?php echo $this->session->userdata('BRANCHid'); ?>";
 
                 axios.post('/get_cash_transfer', this.filter).then(res => {
                     this.cashtransfers = res.data.message;
