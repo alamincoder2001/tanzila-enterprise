@@ -53,7 +53,7 @@ const salesInvoice = Vue.component('sales-invoice', {
                                     <td>{{ product.Product_Name }}</td>
                                     <td>{{ product.SaleDetails_TotalQuantity }}</td>
                                     <td>{{ product.Unit_Name }}</td>
-                                    <td>{{ product.SaleDetails_Discount }} %</td>
+                                    <td>{{ product.Discount_amount }}</td>
                                     <td>{{ product.SaleDetails_Rate }}</td>
                                     <td align="right">{{ product.SaleDetails_TotalAmount }}</td>
                                 </tr>
