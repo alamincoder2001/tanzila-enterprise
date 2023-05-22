@@ -832,14 +832,15 @@
 
 					r.saleDetails.forEach(product => {
 						let cartProduct = {
-							productCode: product.Product_Code,
-							productId: product.Product_IDNo,
+							productCode : product.Product_Code,
+							productId   : product.Product_IDNo,
 							categoryName: product.ProductCategory_Name,
-							name: product.Product_Name,
-							salesRate: product.SaleDetails_Rate,
-							vat: product.SaleDetails_Tax,
-							quantity: product.SaleDetails_TotalQuantity,
-							total: product.SaleDetails_TotalAmount,
+							name        : product.Product_Name,
+							discount    : product.SaleDetails_Discount,
+							salesRate   : product.SaleDetails_Rate,
+							vat         : product.SaleDetails_Tax,
+							quantity    : product.SaleDetails_TotalQuantity,
+							total       : product.SaleDetails_TotalAmount,
 							purchaseRate: product.Purchase_Rate,
 						}
 
