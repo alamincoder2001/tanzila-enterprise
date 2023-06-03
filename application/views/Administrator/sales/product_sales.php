@@ -136,7 +136,7 @@
 								<div class="form-group">
 									<label class="col-xs-3 control-label no-padding-right"> Product </label>
 									<div class="col-xs-8">
-										<v-select v-bind:options="products" v-model="selectedProduct" label="display_text" v-on:input="productOnChange"></v-select>
+										<v-select v-bind:options="products" id="product" ref="product" v-model="selectedProduct" label="display_text" v-on:input="productOnChange"></v-select>
 									</div>
 									<div class="col-xs-1" style="padding: 0;">
 										<a href="<?= base_url('product') ?>" class="btn btn-xs btn-danger" style="height: 25px; border: 0; width: 27px; margin-left: -10px;" target="_blank" title="Add New Product"><i class="fa fa-plus" aria-hidden="true" style="margin-top: 5px;"></i></a>
@@ -158,17 +158,14 @@
 								</div>
 								<div class="form-group">
 									<label class="col-xs-3 control-label no-padding-right"> Quantity </label>
-									<div class="col-xs-9">
+									<div class="col-xs-5">
 										<input type="number" step="0.01" id="quantity" placeholder="Qty" class="form-control" ref="quantity" v-model="selectedProduct.quantity" v-on:input="productTotal" autocomplete="off" required />
 									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="col-xs-3 control-label no-padding-right">Discount(%)</label>
-									<div class="col-xs-9 d-flex">
+									<div class="col-xs-4">
 										<input type="number" step="0.01" min="0" id="productDiscount" v-model="selectedProduct.Discount" @input="productTotal" placeholder="Discount" class="form-control" />
 									</div>
 								</div>
+
 								<div class="form-group">
 									<label class="col-xs-3 control-label no-padding-right"> Amount </label>
 									<div class="col-xs-9">
@@ -665,6 +662,7 @@
 				this.cart.unshift(product);
 				this.clearProduct();
 				this.calculateTotal();
+				document.querySelector("#product [type='search']").focus()
 			},
 			removeFromCart(ind) {
 				this.cart.splice(ind, 1);

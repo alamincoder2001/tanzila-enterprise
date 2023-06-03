@@ -116,7 +116,7 @@
 								<div class="form-group">
 									<label class="col-xs-4 control-label no-padding-right"> Product </label>
 									<div class="col-xs-7">
-										<v-select v-bind:options="products" v-model="selectedProduct" label="display_text" v-on:input="onChangeProduct"></v-select>
+										<v-select v-bind:options="products" id="product" v-model="selectedProduct" label="display_text" v-on:input="onChangeProduct"></v-select>
 									</div>
 									<div class="col-xs-1" style="padding: 0;">
 										<a href="<?= base_url('product') ?>" title="Add New Product" class="btn btn-xs btn-danger" style="height: 25px; border: 0; width: 27px; margin-left: -10px;" target="_blank"><i class="fa fa-plus" aria-hidden="true" style="margin-top: 5px;"></i></a>
@@ -484,6 +484,9 @@
 				this.calculateTotal();
 			},
 			onChangeProduct(){
+				if (this.selectedProduct.Product_SlNo == '') {
+					return
+				}
 				this.$refs.quantity.focus();
 			},
 			productTotal(){
@@ -510,6 +513,7 @@
 				this.cart.push(product);
 				this.clearSelectedProduct();
 				this.calculateTotal();
+				document.querySelector("#product [type='search']").focus()
 			},
 			async removeFromCart(ind){
 				if(this.cart[ind].id) {
@@ -521,6 +525,7 @@
 				}
 				this.cart.splice(ind, 1);
 				this.calculateTotal();
+				this.$refs.product.focus()
 			},
 			clearSelectedProduct(){
 				this.selectedProduct = {
