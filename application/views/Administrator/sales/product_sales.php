@@ -604,6 +604,9 @@
 				if (this.selectedProduct.Product_SlNo == '') {
 					return
 				}
+				if (this.sales.salesType =='retail') {
+					this.selectedProduct.Discount = 0;
+				}
 				if ((this.selectedProduct.Product_SlNo != '' || this.selectedProduct.Product_SlNo != 0) && this.sales.isService == 'false') {
 					this.productStock = await axios.post('/get_product_stock', {
 						productId: this.selectedProduct.Product_SlNo
@@ -613,11 +616,6 @@
 
 					this.productStockText = this.productStock > 0 ? "Available Stock" : "Stock Unavailable";
 				}
-
-				if (this.sales.salesType =='retail') {
-					this.selectedProduct.Discount = 0;
-				}
-
 				this.$refs.quantity.focus();
 			},
 			toggleProductPurchaseRate() {
