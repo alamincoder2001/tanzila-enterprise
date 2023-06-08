@@ -614,6 +614,10 @@
 					this.productStockText = this.productStock > 0 ? "Available Stock" : "Stock Unavailable";
 				}
 
+				if (this.sales.salesType =='retail') {
+					this.selectedProduct.Discount = 0;
+				}
+
 				this.$refs.quantity.focus();
 			},
 			toggleProductPurchaseRate() {
