@@ -268,6 +268,9 @@ class Sales extends CI_Controller
         if (isset($data->customerId) && $data->customerId != '') {
             $clauses .= " and sm.SalseCustomer_IDNo = '$data->customerId'";
         }
+        if (isset($data->areaId) && $data->areaId != '') {
+            $clauses .= " and c.area_ID = '$data->areaId'";
+        }
 
         if (isset($data->employeeId) && $data->employeeId != '') {
             $clauses .= " and sm.employee_id = '$data->employeeId'";
@@ -334,6 +337,10 @@ class Sales extends CI_Controller
 
         if (isset($data->employeeId) && $data->employeeId != '') {
             $clauses .= " and sm.employee_id = '$data->employeeId'";
+        }
+
+        if (isset($data->areaId) && $data->areaId != '') {
+            $clauses .= " and c.area_ID = '$data->areaId'";
         }
 
         if (isset($data->customerType) && $data->customerType != '') {

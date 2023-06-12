@@ -567,3 +567,4 @@ $route['cash_recieve_list']    = 'Administrator/Account/recieveCashTransfer';
 
 //mother api content
 $route['get_mother_api_content'] = 'Administrator/Page/getMotherApiContent';
+

@@ -57,6 +57,11 @@ const salesInvoice = Vue.component('sales-invoice', {
                                     <td>{{ product.SaleDetails_Rate }}</td>
                                     <td align="right">{{ product.SaleDetails_TotalAmount }}</td>
                                 </tr>
+                                <tr>
+                                    <td colspan="4">Total Discount</td>
+                                    <td>{{parseFloat(cart.reduce((acc, pre) => {return acc + +parseFloat(pre.Discount_amount)}, 0)).toFixed(2)}}</td>
+                                    <td colspan="2"></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

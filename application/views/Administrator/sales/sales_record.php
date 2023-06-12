@@ -83,6 +83,7 @@
 						<option value="category">By Category</option>
 						<option value="quantity">By Quantity</option>
 						<option value="user">By User</option>
+						<option value="area">By Area</option>
 					</select>
 				</div>
 
@@ -109,6 +110,11 @@
 				<div class="form-group" style="display:none;" v-bind:style="{display: searchType == 'user' && users.length > 0 ? '' : 'none'}">
 					<label>User</label>
 					<v-select v-bind:options="users" v-model="selectedUser" label="FullName"></v-select>
+				</div>
+
+				<div class="form-group" style="display:none;" v-bind:style="{display: searchType == 'area' && areas.length > 0 ? '' : 'none'}">
+					<label>Area</label>
+					<v-select v-bind:options="areas" v-model="selectedArea" label="District_Name"></v-select>
 				</div>
 
 				<div class="form-group" v-bind:style="{display: searchTypesForRecord.includes(searchType) ? '' : 'none'}">
@@ -245,13 +251,13 @@
 					<tfoot>
 						<tr style="font-weight:bold;">
 							<td colspan="5" style="text-align:right;">Total</td>
-							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_SubTotalAmount)}, 0) }}</td>
-							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_TaxAmount)}, 0) }}</td>
-							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_TotalDiscountAmount)}, 0) }}</td>
-							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_Freight)}, 0) }}</td>
-							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_TotalSaleAmount)}, 0) }}</td>
-							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_PaidAmount)}, 0) }}</td>
-							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_DueAmount)}, 0) }}</td>
+							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_SubTotalAmount)}, 0).toFixed(2) }}</td>
+							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_TaxAmount)}, 0).toFixed(2) }}</td>
+							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_TotalDiscountAmount)}, 0).toFixed(2) }}</td>
+							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_Freight)}, 0).toFixed(2) }}</td>
+							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_TotalSaleAmount)}, 0).toFixed(2) }}</td>
+							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_PaidAmount)}, 0).toFixed(2) }}</td>
+							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_DueAmount)}, 0).toFixed(2) }}</td>
 							<td></td>
 							<td></td>
 						</tr>
@@ -341,8 +347,10 @@
 				selectedUser: null,
 				categories: [],
 				selectedCategory: null,
+				areas: [],
+				selectedArea: null,
 				sales: [],
-				searchTypesForRecord: ['', 'user', 'customer', 'employee'],
+				searchTypesForRecord: ['', 'user', 'customer', 'employee', 'area'],
 				searchTypesForDetails: ['quantity', 'category']
 			}
 		},
@@ -372,11 +380,18 @@
 					this.getCustomers();
 				} else if (this.searchType == 'employee') {
 					this.getEmployees();
+				}else if(this.searchType == 'area'){
+					this.getArea();
 				}
 			},
 			getProducts() {
 				axios.get('/get_products').then(res => {
 					this.products = res.data;
+				})
+			},
+			getArea() {
+				axios.get('/get_districts').then(res => {
+					this.areas = res.data;
 				})
 			},
 			getCustomers() {
@@ -416,6 +431,10 @@
 					this.selectedCategory = null;
 				}
 
+				if (this.searchType != 'area') {
+					this.selectedArea = null;
+				}
+
 				if (this.searchTypesForRecord.includes(this.searchType)) {
 					this.getSalesRecord();
 				} else {
@@ -427,6 +446,7 @@
 					userFullName: this.selectedUser == null || this.selectedUser.FullName == '' ? '' : this.selectedUser.FullName,
 					customerId: this.selectedCustomer == null || this.selectedCustomer.Customer_SlNo == '' ? '' : this.selectedCustomer.Customer_SlNo,
 					employeeId: this.selectedEmployee == null || this.selectedEmployee.Employee_SlNo == '' ? '' : this.selectedEmployee.Employee_SlNo,
+					areaId: this.selectedArea == null || this.selectedArea.District_SlNo == '' ? '' : this.selectedArea.District_SlNo,
 					dateFrom: this.dateFrom,
 					dateTo: this.dateTo
 				}
