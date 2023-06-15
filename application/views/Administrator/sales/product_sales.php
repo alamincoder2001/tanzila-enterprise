@@ -159,7 +159,7 @@
 								<div class="form-group">
 									<label class="col-xs-3 control-label no-padding-right"> Quantity </label>
 									<div class="col-xs-5">
-										<input type="number" step="0.01" id="quantity" placeholder="Qty" class="form-control" ref="quantity" v-model="selectedProduct.quantity" v-on:input="productTotal" autocomplete="off" required />
+										<input type="number" step="0.01" id="quantity" placeholder="Qty" class="form-control" ref="quantity" v-model="selectedProduct.quantity" v-on:input="quantityChange" autocomplete="off" required />
 									</div>
 									<div class="col-xs-4">
 										<input type="number" step="0.01" min="0" id="productDiscount" v-model="selectedProduct.Discount" @input="productTotal" placeholder="Discount" class="form-control" />
@@ -206,7 +206,7 @@
 								<th style="width:20%;color:#000;">Product Name</th>
 								<th style="width:15%;color:#000;">Category</th>
 								<th style="width:7%;color:#000;">Qty</th>
-								<th style="width:7%;color:#000;">Discount</th>
+								<th style="width:7%;color:#000;">Discount(%)</th>
 								<th style="width:8%;color:#000;">Rate</th>
 								<th style="width:15%;color:#000;">Total Amount</th>
 								<th style="width:10%;color:#000;">Action</th>
@@ -218,9 +218,15 @@
 								<td>{{ product.productCode }}</td>
 								<td>{{ product.name }}</td>
 								<td>{{ product.categoryName }}</td>
-								<td>{{ product.quantity }}</td>
-								<td>{{ product.discount }}%</td>
-								<td>{{ product.salesRate }}</td>
+								<td>
+									<input type="number" step="1" min="0" style="width: 65px;" v-model="product.quantity" @input="changeProductTotal(sl)" />
+								</td>
+								<td>
+									<input type="number" step="1" min="0" style="width: 65px;" v-model="product.discount" @input="changeProductTotal(sl)" />
+								</td>
+								<td>
+									<input type="number" step="1" min="0" style="width: 85px;" v-model="product.salesRate" @input="changeProductTotal(sl)" />
+								</td>
 								<td>{{ product.total }}</td>
 								<td><a href="" v-on:click.prevent="removeFromCart(sl)"><i class="fa fa-trash"></i></a></td>
 							</tr>
@@ -502,7 +508,7 @@
 			}
 		},
 		methods: {
-			getBankAccount(){
+			getBankAccount() {
 				axios.get('/get_bank_accounts').then(res => {
 					this.bankaccounts = res.data;
 				})
@@ -547,10 +553,38 @@
 					}
 				})
 			},
+			quantityChange() {
+				this.productTotal();
+				setTimeout(() => {
+					document.querySelector("#productDiscount").focus();
+				}, 1000);
+			},
 			productTotal() {
 				let total = (parseFloat(this.selectedProduct.quantity) * parseFloat(this.selectedProduct.Product_SellingPrice)).toFixed(2);
-				let discount = (parseFloat(total) * this.selectedProduct.Discount)/100;
-				this.selectedProduct.total = (total-discount).toFixed(2);
+				let discount = (parseFloat(total) * this.selectedProduct.Discount) / 100;
+				this.selectedProduct.total = (total - discount).toFixed(2);
+
+			},
+			async changeProductTotal(sl) {
+				let product = this.cart[sl];
+				let stock = await axios.post('/get_product_stock', {
+					productId: product.productId
+				}).then(res => {
+					return res.data;
+				})
+				if (this.sales.salesId == '' && parseFloat(product.quantity) > parseFloat(stock)) {
+					alert("Unavailable stock");
+					product.quantity = product.quantity.slice(0, -1);
+					return
+				}
+				this.cart.map(pro => {
+					let withoutDistotal = parseFloat(pro.quantity) * parseFloat(pro.salesRate);
+					let discount = (withoutDistotal * parseFloat(pro.discount) / 100);
+					pro.total = parseFloat(withoutDistotal - discount).toFixed(2);
+					return pro;
+				})
+
+				this.calculateTotal();
 			},
 			onSalesTypeChange() {
 				this.selectedCustomer = {
@@ -604,7 +638,7 @@
 				if (this.selectedProduct.Product_SlNo == '') {
 					return
 				}
-				if (this.sales.salesType =='retail') {
+				if (this.sales.salesType == 'retail') {
 					this.selectedProduct.Discount = 0;
 				}
 				if ((this.selectedProduct.Product_SlNo != '' || this.selectedProduct.Product_SlNo != 0) && this.sales.isService == 'false') {
@@ -747,7 +781,7 @@
 
 				if (this.selectedBank != null && this.sales.payment_type == 'Bank') {
 					this.sales.account_id = this.selectedBank.account_id
-				}else{
+				} else {
 					this.sales.account_id = ''
 				}
 
@@ -832,15 +866,15 @@
 
 					r.saleDetails.forEach(product => {
 						let cartProduct = {
-							productCode : product.Product_Code,
-							productId   : product.Product_IDNo,
+							productCode: product.Product_Code,
+							productId: product.Product_IDNo,
 							categoryName: product.ProductCategory_Name,
-							name        : product.Product_Name,
-							discount    : product.SaleDetails_Discount,
-							salesRate   : product.SaleDetails_Rate,
-							vat         : product.SaleDetails_Tax,
-							quantity    : product.SaleDetails_TotalQuantity,
-							total       : product.SaleDetails_TotalAmount,
+							name: product.Product_Name,
+							discount: product.SaleDetails_Discount,
+							salesRate: product.SaleDetails_Rate,
+							vat: product.SaleDetails_Tax,
+							quantity: product.SaleDetails_TotalQuantity,
+							total: product.SaleDetails_TotalAmount,
 							purchaseRate: product.Purchase_Rate,
 						}
 
